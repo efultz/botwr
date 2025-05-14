@@ -155,6 +155,9 @@ let render ~updates ~update_data ~game ~max_hearts ~max_stamina (basic : Optimiz
         | Mighty bonus as x -> Some ("Mighty", Icon.Mighty, bonus, Cooking.Effect.max_potency x)
         | Tough bonus as x -> Some ("Tough", Icon.Tough, bonus, Cooking.Effect.max_potency x)
         | Bright bonus as x -> Some ("Bright", Icon.Bright, bonus, Cooking.Effect.max_potency x)
+        | Scorching bonus as x -> Some ("Scorching", Icon.Scorching, bonus, Cooking.Effect.max_potency x)
+        | Biting bonus as x -> Some ("Biting", Icon.Biting, bonus, Cooking.Effect.max_potency x)
+        | Stormy bonus as x -> Some ("Stormy", Icon.Stormy, bonus, Cooking.Effect.max_potency x)
       in
       let effect =
         opt >>| fun (s, icon, { potency; _ }, is_max) ->
@@ -327,6 +330,7 @@ let button_choices =
       "Fireproof", Fireproof;
       "Hasty", Hasty;
       "Rapid", Rapid;
+      "Scorching", Scorching;
       "Sticky", Sticky;
       "Hearty", Hearty;
       "Sunny", Sunny;
@@ -335,6 +339,8 @@ let button_choices =
       "Spicy", Spicy;
       "Tough", Tough;
       "Bright", Bright;
+      "Biting", Biting;
+      "Stormy", Stormy;
     |]
 
 let render_buttons ~game ~update selected_kind =
@@ -342,7 +348,7 @@ let render_buttons ~game ~update selected_kind =
     update (Array.find_map button_choices ~f:(fun (k, v) -> Option.some_if String.(k = s) v))
   in
   Node.div
-    Attr.[ class_ "my-2"; on_change handler; style Css_gen.(max_width (`Em 37)) ]
+    Attr.[ class_ "my-2"; on_change handler; style Css_gen.(max_width (`Em 40)) ]
     (Array.fold_right button_choices ~init:[] ~f:(fun (label, kind) -> function
        | acc when not (Game.is_in_game (Ingredient.Effect.Kind.availability kind) ~game) -> acc
        | acc ->
@@ -522,7 +528,10 @@ let component ~(game : Game.t Bonsai.Value.t) ~init_max_hearts ~init_max_stamina
             |Sneaky
             |Mighty
             |Tough
-            |Bright ->
+            |Bright
+            |Scorching
+            |Biting
+            |Stormy ->
              true)
        in
        let kind_with_gloomy_hearts =

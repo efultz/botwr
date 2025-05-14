@@ -30,6 +30,9 @@ let get_sort_by_kind : Ingredient.Effect.Kind.t -> Ingredient.t -> Ingredient.t 
  |Fireproof
  |Hasty
  |Rapid
+ |Scorching
+ |Biting
+ |Stormy
  |Sticky
  |Mighty
  |Sneaky

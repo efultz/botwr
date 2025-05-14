@@ -213,5 +213,8 @@ let get item game =
         | Brightcap, _ -> [%blob "images/brightcap.png"]
         | Sticky_lizard, _ -> [%blob "images/sticky-lizard.png"]
         | Sticky_frog, _ -> [%blob "images/sticky-frog.png"]
+        | Fire_fruit, _ -> [%blob "images/fire-fruit.png"]
+        | Ice_fruit, _ -> [%blob "images/ice-fruit.png"]
+        | Shock_fruit, _ -> [%blob "images/shock-fruit.png"]
       in
       compute blob)

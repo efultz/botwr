@@ -33,6 +33,9 @@ module Group = struct
       | Spicy
       | Tough
       | Bright
+      | Scorching
+      | Biting
+      | Stormy
       | Monster_parts
       | Special
     [@@deriving sexp, compare, enumerate]
@@ -60,7 +63,10 @@ module Group = struct
   | Sunny
    |Rapid
    |Sticky
-   |Bright ->
+   |Bright
+   |Scorching
+   |Biting
+   |Stormy ->
     TOTK
 
   let of_glossary : Glossary.t -> t = function
@@ -94,7 +100,10 @@ module Group = struct
     | Spicy -> Spicy
     | Tough -> Tough
     | Sunny -> Sunny
-    | Bright -> Bright)
+    | Bright -> Bright
+    | Scorching -> Scorching
+    | Biting -> Biting
+    | Stormy -> Stormy)
 
   let to_string = function
   | Nothing -> "No Effect"
@@ -113,6 +122,9 @@ module Group = struct
   | Spicy -> "Spicy"
   | Tough -> "Tough"
   | Bright -> "Bright"
+  | Scorching -> "Scorching"
+  | Biting -> "Biting"
+  | Stormy -> "Stormy"
   | Monster_parts -> "Monster Parts"
   | Special -> "Special"
 
@@ -133,6 +145,9 @@ module Group = struct
   | Spicy -> Some "Cold Resistance"
   | Tough -> Some "Armor"
   | Bright -> Some "Illuminate the Depths"
+  | Scorching -> Some "Attack in hot weather"
+  | Biting -> Some "Attack in cold weather"
+  | Stormy -> Some "Attack in stormy weather"
   | Monster_parts -> None
   | Special -> Some "Make weird foods..."
 
@@ -155,6 +170,9 @@ module Group = struct
       | Spicy -> First Spicy
       | Tough -> First Tough
       | Bright -> First Bright
+      | Scorching -> First Scorching
+      | Biting -> First Biting
+      | Stormy -> First Stormy
       | Monster_parts -> Second (Blob.get (Monster_guts Bokoblin_guts) game)
       | Special -> Second (Blob.get Fairy game)
     in

@@ -110,6 +110,9 @@ module Effect = struct
     | Mighty    of bonus
     | Tough     of bonus
     | Bright    of bonus
+    | Scorching    of bonus
+    | Biting    of bonus
+    | Stormy    of bonus
   [@@deriving sexp, compare, equal, variants]
 
   let max_potency = function
@@ -125,6 +128,9 @@ module Effect = struct
   | Mighty { potency; _ } -> potency = 3
   | Tough { potency; _ } -> potency = 3
   | Bright { potency; _ } -> potency = 3
+  | Scorching { potency; _ } -> potency = 1
+  | Biting { potency; _ } -> potency = 1
+  | Stormy { potency; _ } -> potency = 1
 
   let duration = function
   | Nothing -> 0
@@ -138,7 +144,10 @@ module Effect = struct
    |Sneaky { duration; _ }
    |Mighty { duration; _ }
    |Tough { duration; _ }
-   |Bright { duration; _ } ->
+   |Bright { duration; _ }
+   |Scorching { duration; _ }
+   |Biting { duration; _ }
+   |Stormy { duration; _ } ->
     duration
 
   let score ~num_effect_ingredients ~random_bonus ~(algo : Algo.t) = function
@@ -153,7 +162,10 @@ module Effect = struct
    |Sneaky { potency; wasted; duration }
    |Mighty { potency; wasted; duration }
    |Tough { potency; wasted; duration }
-   |Bright { potency; wasted; duration } ->
+   |Bright { potency; wasted; duration }
+   |Scorching { potency; wasted; duration }
+   |Biting { potency; wasted; duration }
+   |Stormy { potency; wasted; duration } ->
     let actual_duration = min duration 1800 in
     let wasted_duration = duration - actual_duration in
     let penalty =
@@ -305,6 +317,9 @@ let cook map =
       | Mighty x -> convert 5 7 Effect.mighty x
       | Tough x -> convert 5 9 Effect.tough x
       | Bright x -> convert 5 7 Effect.bright x
+      | Scorching x -> convert 99 99 Effect.scorching x
+      | Biting x -> convert 99 99 Effect.biting x
+      | Stormy x -> convert 99 99 Effect.stormy x
     in
     let random_effects : Special_bonus.t list =
       match res.critical, hearts, stamina, effect with

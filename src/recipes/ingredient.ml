@@ -106,6 +106,9 @@ module Effect = struct
     | Mighty     of Activity.t
     | Tough      of Activity.t
     | Bright     of Activity.t
+    | Scorching     of Activity.t
+    | Biting     of Activity.t
+    | Stormy     of Activity.t
   [@@deriving sexp, compare, equal, hash, variants]
 
   let merge ~count = function
@@ -126,6 +129,9 @@ module Effect = struct
   | Mighty x -> Mighty (Activity.merge ~count x)
   | Tough x -> Tough (Activity.merge ~count x)
   | Bright x -> Bright (Activity.merge ~count x)
+  | Scorching x -> Scorching (Activity.merge ~count x)
+  | Biting x -> Biting (Activity.merge ~count x)
+  | Stormy x -> Stormy (Activity.merge ~count x)
 
   let combine left right =
     match left, right with
@@ -148,6 +154,9 @@ module Effect = struct
     | Mighty x, Mighty y -> Mighty (Activity.combine x y)
     | Tough x, Tough y -> Tough (Activity.combine x y)
     | Bright x, Bright y -> Bright (Activity.combine x y)
+    | Scorching x, Scorching y -> Scorching (Activity.combine x y)
+    | Biting x, Biting y -> Biting (Activity.combine x y)
+    | Stormy x, Stormy y -> Stormy (Activity.combine x y)
     | Neutral dur, x
      |x, Neutral dur -> (
       match x with
@@ -168,7 +177,10 @@ module Effect = struct
       | Sneaky x -> Sneaky { x with duration = Duration.combine dur x.duration }
       | Mighty x -> Mighty { x with duration = Duration.combine dur x.duration }
       | Tough x -> Tough { x with duration = Duration.combine dur x.duration }
-      | Bright x -> Bright { x with duration = Duration.combine dur x.duration })
+      | Bright x -> Bright { x with duration = Duration.combine dur x.duration }
+      | Scorching x -> Scorching { x with duration = Duration.combine dur x.duration }
+      | Biting x -> Biting { x with duration = Duration.combine dur x.duration }
+      | Stormy x -> Stormy { x with duration = Duration.combine dur x.duration })
     | _ -> Nothing
 
   module Kind = struct
@@ -191,6 +203,9 @@ module Effect = struct
         | Spicy
         | Sunny
         | Tough
+        | Scorching
+        | Biting
+        | Stormy
       [@@deriving sexp, compare, equal, hash]
     end
 
@@ -215,7 +230,10 @@ module Effect = struct
      |Sneaky
      |Mighty
      |Tough
-     |Bright ->
+     |Bright
+     |Scorching
+     |Biting
+     |Stormy ->
       true
 
     let availability : t -> Game.availability = function
@@ -236,7 +254,10 @@ module Effect = struct
     | Sunny
      |Rapid
      |Sticky
-     |Bright ->
+     |Bright
+     |Scorching
+     |Biting
+     |Stormy ->
       TOTK
   end
 end
@@ -322,6 +343,9 @@ let to_kind : t -> Effect.Kind.t = function
 | { effect = Mighty _; _ } -> Mighty
 | { effect = Tough _; _ } -> Tough
 | { effect = Bright _; _ } -> Bright
+| { effect = Scorching _; _ } -> Scorching
+| { effect = Biting _; _ } -> Biting
+| { effect = Stormy _; _ } -> Stormy
 
 let has_effect_or_special : t -> bool = function
 | { category = Dragon; _ } -> true
@@ -342,7 +366,10 @@ let has_effect_or_special : t -> bool = function
  |{ effect = Sneaky _; _ }
  |{ effect = Mighty _; _ }
  |{ effect = Tough _; _ }
- |{ effect = Bright _; _ } ->
+ |{ effect = Bright _; _ }
+ |{ effect = Scorching _; _ }
+ |{ effect = Biting _; _ }
+ |{ effect = Stormy _; _ } ->
   true
 
 let merge ({ item; hearts; effect; category; critical; fused } as ingredient) ~count =

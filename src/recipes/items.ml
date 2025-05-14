@@ -209,6 +209,9 @@ module Self = struct
     | Brightcap
     | Deep_firefly
     | Glowing_cave_fish
+    | Fire_fruit
+    | Ice_fruit
+    | Shock_fruit
     (* Other *)
     | Fairy
     | Star_fragment

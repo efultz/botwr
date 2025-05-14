@@ -110,6 +110,12 @@ let make_tough item = make_effect item Ingredient.Effect.tough (0, 50)
 
 let make_bright item = make_effect item Ingredient.Effect.bright (2, 0)
 
+let make_scorching item = make_effect item Ingredient.Effect.scorching (1, 0)
+
+let make_biting item = make_effect item Ingredient.Effect.biting (1, 0)
+
+let make_stormy item = make_effect item Ingredient.Effect.stormy (1, 0)
+
 let energizing_critter item x =
   Ingredient.
     {
@@ -311,6 +317,9 @@ let to_ingredient =
     | Brightcap -> make_bright Brightcap 4 1
     | Deep_firefly -> effect_critter Deep_firefly (2, 0) Ingredient.Effect.bright 2
     | Glowing_cave_fish -> make_bright Glowing_cave_fish 8 2
+    | Fire_fruit -> make_scorching Fire_fruit 2 1
+    | Ice_fruit -> make_biting Ice_fruit 2 1
+    | Shock_fruit -> make_stormy Shock_fruit 2 1
     (* Other *)
     | Fairy ->
       (* The -3 full hearts is only applied when the final result is a Fairy Tonic *)
@@ -597,7 +606,10 @@ let availability : t -> Game.availability = function
  |Glowing_cave_fish
  |Brightcap
  |Sticky_lizard
- |Sticky_frog ->
+ |Sticky_frog
+ |Fire_fruit
+ |Ice_fruit
+ |Shock_fruit ->
   TOTK
 
 let to_string = function
@@ -788,6 +800,9 @@ let to_string = function
 | Brightcap -> "Brightcap"
 | Sticky_lizard -> "Sticky Lizard"
 | Sticky_frog -> "Sticky Frog"
+| Fire_fruit -> "Fire fruit"
+| Ice_fruit -> "Ice fruit"
+| Shock_fruit -> "Shock fruit"
 
 let ordered_botw =
   lazy
@@ -947,9 +962,9 @@ let ordered_totk =
        Hydromelon;
        Mighty_bananas;
        Spicy_pepper;
-       (* Fire_fruit *)
-       (* Ice_fruit *)
-       (* Shock_fruit *)
+       Fire_fruit;
+       Ice_fruit;
+       Shock_fruit;
        Splash_fruit;
        Dazzlefruit;
        Big_hearty_truffle;
